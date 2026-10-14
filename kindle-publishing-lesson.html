@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindle出版は「信頼構築装置」</title>
+<style>
+  body { margin: 0; background: #f6f4ef; }
+  .lesson { --ink:#2b2a28; --muted:#6b675f; --line:#e2ddd2; --card:#fff; --accent:#1f6f6b; --accent-soft:#e3f1ef; --ng:#b54a3a; --ng-soft:#f9e8e4; --ok:#2f7a4a; --ok-soft:#e6f3ea; --warn-soft:#fff4d6; --warn:#8a6414;
+    max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--ink); font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif; line-height: 1.85; font-size: 16px; }
+  .lesson * { box-sizing: border-box; }
+  .lesson h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 8px; }
+  .lesson h2 { font-size: 1.3rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); }
+  .lesson h3 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--accent); }
+  .lesson p { margin: 0 0 12px; }
+  .lesson ul, .lesson ol.plain { margin: 0 0 12px; padding-left: 1.3em; }
+  .lesson li { margin-bottom: 6px; }
+  .lesson .lead { color: var(--muted); }
+  .lesson .tag { display: inline-block; font-size: .8rem; background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-weight: 700; margin-bottom: 10px; }
+  .lesson .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .lesson .col { border-radius: 12px; padding: 14px 16px; }
+  .lesson .col.ng { background: var(--ng-soft); border: 1px solid #e8c3bb; }
+  .lesson .col.ok { background: var(--ok-soft); border: 1px solid #bfdcc9; }
+  .lesson .col .ttl { font-weight: 700; margin-bottom: 8px; }
+  .lesson .col.ng .ttl { color: var(--ng); }
+  .lesson .col.ok .ttl { color: var(--ok); }
+  .lesson .col ul { margin: 0; padding-left: 1.2em; }
+  .lesson .steps { list-style: none; padding: 0; counter-reset: s; }
+  .lesson .steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 12px 56px; position: relative; margin-bottom: 10px; }
+  .lesson .steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; text-align: center; line-height: 28px; font-weight: 700; }
+  .lesson .steps b { display: block; }
+  .lesson table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 12px 0 16px; font-size: .95rem; }
+  .lesson th, .lesson td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .lesson th { background: var(--accent-soft); width: 30%; }
+  .lesson tr:last-child th, .lesson tr:last-child td { border-bottom: 0; }
+  .lesson .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .note b { color: var(--warn); }
+  .lesson .sample { background: #fbfaf7; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin: 12px 0; font-size: .95rem; }
+  .lesson .sample .lbl { display: inline-block; font-size: .75rem; font-weight: 700; color: #fff; background: var(--muted); border-radius: 6px; padding: 0 8px; margin-bottom: 6px; }
+  .lesson .summary { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .summary b { display: block; margin-bottom: 4px; }
+  .lesson .work { background: var(--card); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .tips { font-size: .9rem; color: var(--muted); }
+  @media (max-width: 600px) {
+    .lesson .compare { grid-template-columns: 1fr; }
+    .lesson th { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<div class="lesson">
+
+  <span class="tag">積み上げ式メディアの講義</span>
+  <h1>Kindle出版は「信頼構築装置」</h1>
+  <p class="lead">Kindle出版とは、AmazonのKDP（Kindleダイレクト・パブリッシング）を使って、誰でも無料で電子書籍を出版できる仕組みです。出版社の審査も、在庫も、印刷費も不要。そして積み上げ式メディアとしての本当の価値は印税ではなく、<b>「著者」という肩書きが手に入る信頼構築装置</b>だということです。</p>
+
+  <!-- ===== 図解 ===== -->
+  <h2>図解：アーカイブが「著者の肩書き」に変わる流れ</h2>
+  <ol class="steps">
+    <li><b>アーカイブ</b>セミナー録画・スタエフ音声など、すでにある一次情報</li>
+    <li><b>文字起こし → 章立て</b>AIで文字起こしし、目次案を作る</li>
+    <li><b>話し言葉 → 読み物</b>AIが整え、自分が監修する</li>
+    <li><b>原稿＋表紙で出版申請</b>7割で出す。出してから直せる</li>
+    <li><b>巻末特典 → LINE</b>読者限定特典でリストに接続する</li>
+  </ol>
+  <div class="note"><b>合言葉</b>　完璧を目指さず「7割で出す」。話して終わりだった録画が、「著者」という肩書きに変わります。</div>
+
+  <!-- ===== Part 1 ===== -->
+  <h2>Part 1　Kindleの何がすごいのか</h2>
+
+  <h3>① 「著者」の肩書きが手に入る</h3>
+  <p>「本を出している人」というだけで、専門家としての見られ方が変わります（権威性：9-3の影響力の原則）。プロフィール・LP・登壇プロフィールに「著書」と書けるようになります。</p>
+
+  <h3>② 一度出せば売れ続けるストック</h3>
+  <p>Amazonという世界最大の本屋に並び続け、検索から見つけてもらえます。私自身もKindleで3カテゴリ1位・Amazon十冠以上の実績がありますが、この「実績そのもの」が信頼構築装置になっています。</p>
+
+  <h3>③ 深い信頼が作れる</h3>
+  <p>本を1冊読む＝数時間の接触です。「個別相談の前にKindleを全部読んできました」「もうファンなので買うと決めてきました」という状態を作れます（AIDMAのDとMを代行：11-3）。</p>
+
+  <!-- ===== Part 2 ===== -->
+  <h2>Part 2　出版の仕組み（KDPの基本）</h2>
+  <table>
+    <tr><th>費用</th><td>出版自体は無料です（KDPアカウント登録のみ）。登録に数日かかることがあるので早めに済ませます。</td></tr>
+    <tr><th>印税</th><td>販売価格の35％または70％です（70％は価格帯などの条件を満たした場合）。読み放題（Kindle Unlimited）の既読ページ分も収益になります。</td></tr>
+    <tr><th>入稿</th><td>原稿（.docx等）＋表紙画像をアップロードします。Romancerなどの無料ツールで電子書籍形式（.epub）に整えるルートと、.docxをKDPに直接入稿する簡易ルートがあります。</td></tr>
+    <tr><th>表紙</th><td>ChatGPTで画像生成、またはCanvaで作成します。タイトルの視認性が命です。</td></tr>
+    <tr><th>審査</th><td>出版申請後、最大72時間程度でAmazonに並びます。</td></tr>
+  </table>
+
+  <h3>印税の仕組みを少し詳しく</h3>
+  <ul>
+    <li><b>70％印税には条件があります</b>。販売価格が一定の範囲内であること、などです。米国のAmazon.comでは、2026年7月7日付で70％印税の価格帯が2.99〜12.99ドルに広がりました（以前は2.99〜9.99ドル）。他のKDPストアでも同様の変更があるとされています。</li>
+    <li>70％の場合は、データ容量に応じた<b>配信コスト</b>が差し引かれます（画像が多いほど容量が増えます）。</li>
+    <li><b>Kindle Unlimitedの収益</b>は、決まった単価ではなく、月ごとの基金を読まれたページ数で分け合う仕組みです。1ページあたりの金額は毎月変わります。</li>
+  </ul>
+  <p class="tips">※日本のKindleストアでの価格帯（円）や配信コストの数字は、変更されることがあります。出版前にKDP日本語ヘルプの「ロイヤリティ」のページで必ず最新の内容を確認してください。</p>
+
+  <h3>KDPアカウント登録の流れ</h3>
+  <ol class="plain">
+    <li>Amazonアカウントで、KDPにサインインする</li>
+    <li>名前・住所などの著者情報を入力する</li>
+    <li>印税の振込先（銀行口座）を登録する</li>
+    <li><b>税務情報（税務インタビュー）に最後まで回答する</b>　※飛ばすと出版機能が使えなくなると言われています</li>
+    <li>本人確認が求められたら、案内に従って進める</li>
+  </ol>
+  <p class="tips">※本人確認や税務情報の入力でつまずく人が多いと言われます。出版したい本が決まる前に、先に登録だけ済ませておくと安心です。</p>
+
+  <!-- ===== Part 3 ===== -->
+  <h2>Part 3　ゼロから書かない：アーカイブ → 本の流れ</h2>
+  <p>「本を書く時間なんてない」——大丈夫です。すでにあるアーカイブ（セミナー録画・スタエフ音声）が、そのまま原稿になります（20-3の「一次情報×AI」の実践編）。</p>
+  <ol class="steps">
+    <li><b>STEP1：文字起こし</b>セミナーアーカイブや音声を文字起こしする（Whisper／Claude Code）</li>
+    <li><b>STEP2：章立て</b>文字起こしを読ませて、章立て（目次案）を作る</li>
+    <li><b>STEP3：話し言葉 → 読み物</b>各章を整える（AIが変換、自分は監修）</li>
+    <li><b>STEP4：入稿</b>1冊の原稿に束ね、表紙を付けて出版申請する</li>
+  </ol>
+  <p>この流れなら、最短数日で1冊が形になります。</p>
+
+  <h3>AIへの指示文の例</h3>
+  <div class="sample"><span class="lbl">章立てを作る</span><br>
+    以下は私のセミナーの文字起こしです。この内容だけを使って、読者が「〇〇の悩みを解決できる」と感じる電子書籍の目次案を、全6章（各章3〜4節）で作ってください。文字起こしにない内容は足さないでください。<br>
+    ＜ここに文字起こしを貼る＞</div>
+  <div class="sample"><span class="lbl">章を読み物に整える</span><br>
+    次の文字起こしを、読み物として読みやすい文章に整えてください。条件：①私が話した内容・事例・言い回しは変えない　②「えー」「あのー」などは削除　③話し言葉は、意味を変えずに書き言葉へ　④事実や数字を勝手に足さない。<br>
+    ＜ここに該当の章の文字起こしを貼る＞</div>
+
+  <h3>監修のチェックリスト（自分の目で確認する）</h3>
+  <ul>
+    <li>事実・数字・固有名詞は正しいか</li>
+    <li>お客様の事例は、許可を得ているか（個人が特定されないか）</li>
+    <li>「必ず稼げる」「絶対に治る」などの断定的・誇大な表現がないか</li>
+    <li>他の人の文章・画像・言葉を、そのまま使っていないか</li>
+    <li>自分の言葉として読んで違和感がないか</li>
+  </ul>
+
+  <div class="note">
+    <b>⚠ AIを使った本は「申告」が必要な場合があります</b><br>
+    KDPでは、AIが生成したテキスト・画像・翻訳を含む本について、出版時に申告するルールがあります。AIが文章を作った場合は、あとで自分で大きく手を入れても「AI生成」として扱われます。一方、自分で書いた文章を、AIで推敲・誤字チェック・改善した場合は「AI支援」とされ、申告は不要とされています。<br>
+    「話し言葉をAIが読み物に変換する」やり方は、どちらに当たるか迷うところです。<b>出版前に、KDPのコンテンツガイドラインと申告画面の最新の文言を必ず確認し、迷う場合は「AI生成」として申告する</b>のが安全です。表紙をAIで作る場合も、画像の申告が必要になります。
+  </div>
+
+  <!-- ===== Part 4 ===== -->
+  <h2>Part 4　売れるKindleのポイント</h2>
+
+  <h3>1. タイトルが9割</h3>
+  <p>検索されるキーワード × ベネフィットで決めます（10章の見出しの技術がそのまま使えます）。</p>
+  <div class="sample">
+    ・型：「【検索されるキーワード】で【読者が得られる変化】を叶える本」<br>
+    ・サブタイトルで、誰向けか・何が分かるかを補足する<br>
+    ・例：「〇〇初心者のための△△入門　最初の30日でやること」</div>
+  <p class="tips">※AmazonやGoogleの検索窓にキーワードを入れ、候補に出てくる言葉をタイトルに入れると、探されている言葉に近づけます。</p>
+
+  <h3>2. カテゴリ選定で1位を狙う</h3>
+  <p>競合の少ないカテゴリを選んでベストセラー1位を取ると、「○○部門1位」の実績が一生使えます。</p>
+  <ul>
+    <li>出版時に選べるカテゴリを一覧で見て、本の内容に合う中で、<b>本の数が少なく、上位の本の売れ方がゆるやかな</b>ところを探す</li>
+    <li>すでにそのカテゴリで上位の本を見て、どのくらいで1位に入れそうか目安をつける</li>
+    <li>実績を書くときは、カテゴリ名と日付を正確に書く（スクリーンショットも保存しておく）</li>
+  </ul>
+
+  <h3>3. 巻末に特典 → LINE導線</h3>
+  <p>読者限定特典（チェックリスト・動画など）でリストに接続します（11-2）。Udemyのボーナスレクチャーと同じ発想です。</p>
+  <div class="sample"><span class="lbl">巻末の文例</span><br>
+    最後まで読んでいただき、ありがとうございます。<br>
+    本書の読者限定で、「〇〇チェックリスト」と「△△解説動画」をプレゼントしています。<br>
+    ▼受け取りはこちら（LINEに登録して、「kindle」と送ってください）<br>
+    https://（LINE登録のURL / QRコード）</div>
+  <ul>
+    <li>特典の案内は、<b>巻末だけでなく、本の中盤にも1回</b>入れると取りこぼしが減ります</li>
+    <li>QRコードとURLの両方を載せる（電子書籍はスマホで読む人が多いため、タップで開けるURLが効きます）</li>
+    <li>経路別に数字を見るため、Kindle専用のLINE登録URL（またはキーワード）を用意する</li>
+  </ul>
+
+  <h3>4. 発売直後の初速</h3>
+  <p>リスト・SNSで発売告知をして、レビューとランキングを作ります（キャンペーン設計）。</p>
+  <table>
+    <tr><th>発売の1週間前</th><td>メルマガ・LINE・SNSで「近日発売」を予告する</td></tr>
+    <tr><th>発売日</th><td>リスト全員に案内。Threads・スタエフでも告知する</td></tr>
+    <tr><th>発売後</th><td>読んでくれた人に、感想やレビューをお願いする（見返りを約束するのは禁物）</td></tr>
+  </table>
+  <div class="note">
+    <b>レビューのお願いについて</b><br>
+    Amazonは、レビューの対価として金品を渡すことや、レビュー内容を指示することを禁止しています。「お気づきの点があれば、正直な感想をお寄せください」程度のお願いにとどめましょう。
+  </div>
+
+  <h3>5. KDPセレクトと無料キャンペーン</h3>
+  <ul>
+    <li>KDPセレクトに登録すると、その電子書籍は一定期間（一般に90日ごと）、Amazon独占での配信になります。その代わりに、Kindle Unlimitedの対象になり、期間中は無料キャンペーンなどの販促ツールを使えます。</li>
+    <li>無料キャンペーンは、期間中に一気にダウンロードされて順位が上がりやすい一方、<b>終了後は元の順位に戻りやすい</b>という報告が多くあります。事前の告知とセットで使いましょう。</li>
+    <li>他の電子書店でも売りたい場合は、KDPセレクトに入るかどうかを、あらかじめ決めておきます。</li>
+  </ul>
+  <p class="tips">※KDPセレクトの条件（期間・無料日数など）は変更されることがあります。登録前にKDP日本語ヘルプで確認してください。</p>
+
+  <h3>6. 1冊で終わらせない</h3>
+  <p>テーマ別にシリーズ化すると、著者ページがそのまま専門家の棚になります。</p>
+  <ul>
+    <li>1冊目：入門編（一番多くの人に届く）</li>
+    <li>2冊目：実践編・事例編（より深く）</li>
+    <li>3冊目：特定の悩みに絞った本（検索から見つけてもらう）</li>
+    <li>それぞれの巻末から、同じLINEに接続する</li>
+  </ul>
+
+  <!-- ===== Part 5 ===== -->
+  <h2>Part 5　表紙と原稿の準備</h2>
+  <table>
+    <tr><th>表紙のサイズ</th><td>推奨は、高さ2560 × 幅1600ピクセル（縦横比1.6：1以上）です。最小は625 × 1000ピクセルとされています。</td></tr>
+    <tr><th>表紙の形式</th><td>JPEGまたはTIFF。カラーはRGB。ファイルは50MB未満。圧縮は最小限にします。</td></tr>
+    <tr><th>タイトルの見やすさ</th><td>小さなサムネイルでも、タイトルが読めるかを必ず確認します。</td></tr>
+    <tr><th>原稿</th><td>見出し（章・節）を設定した.docxを用意します。目次は、見出し設定から自動で作る形にします。</td></tr>
+  </table>
+  <p class="tips">※数字は、公式以外の情報にもとづくものを含みます。入稿前にKDP日本語ヘルプの「表紙画像のガイドライン」で確認してください。</p>
+
+  <h3>出版前の最終チェック</h3>
+  <ul>
+    <li>KDPの「プレビュー」で、スマホ・タブレットの表示を確認する（改行・画像・目次）</li>
+    <li>巻末特典のURL・QRコードが、実際に開けるか確認する</li>
+    <li>著者名・タイトル・サブタイトルが、表紙と登録内容で一致しているか</li>
+    <li>AI利用の申告に、間違いがないか</li>
+  </ul>
+
+  <!-- ===== Part 6 ===== -->
+  <h2>Part 6　出版後にやること</h2>
+  <ol class="steps">
+    <li><b>プロフィールに「著書」を入れる</b>SNS・LP・登壇プロフィール・名刺に書く</li>
+    <li><b>著者ページを整える</b>顔写真・自己紹介・本の一覧を整える</li>
+    <li><b>LINEの数字を見る</b>Kindle経由の登録数、特典の受け取り数</li>
+    <li><b>感想を事例にする</b>許可を得て、感想を集める</li>
+    <li><b>次の本・改訂を考える</b>反応を見て、原稿を直して再出版（電子書籍の強み）</li>
+  </ol>
+
+  <!-- ===== よくある失敗 ===== -->
+  <h2>よくある失敗</h2>
+  <div class="compare">
+    <div class="col ng">
+      <div class="ttl">✕ 失敗</div>
+      <ul>
+        <li>完璧主義で一生出版できない</li>
+        <li>ゼロからAIに書かせる</li>
+        <li>特典・導線なしで出版する</li>
+        <li>印税目当てにする</li>
+      </ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">◯ こう変える</div>
+      <ul>
+        <li>7割で出す。出してから直せるのが電子書籍の強み</li>
+        <li>アーカイブ（一次情報）を原稿にする。ゼロからAIに書かせると、無色透明な本になる</li>
+        <li>巻末からリストへの接続が本命</li>
+        <li>Kindle単体の収益は小さい。価値は肩書き・信頼・導線</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Work ===== -->
+  <div class="work">
+    <b>✏ ワーク　あなたの1冊目を決める</b>
+    <ol class="plain">
+      <li>使えるアーカイブ（セミナー録画・スタエフ音声）を3つ書き出す</li>
+      <li>その中から、一番「自分の専門」が伝わる1つを選ぶ</li>
+      <li>「誰の、どんな悩みを解決する本か」を一文で書く</li>
+      <li>タイトル案を5つ書き、検索窓で候補を確認して1つに絞る</li>
+      <li>巻末特典を1つ決める（チェックリスト／動画／テンプレートなど）</li>
+    </ol>
+  </div>
+
+  <div class="summary"><b>まとめ</b>
+    Kindle出版は、「著者」という肩書き・ストックされる実績・数時間の深い接触が手に入る信頼構築装置。ゼロから書かず、アーカイブ（一次情報）を原稿にして、AIで整え、7割で出す。タイトルは検索されるキーワード×ベネフィット、カテゴリは競合の少ないところで1位を狙い、巻末の特典からLINEへ接続する。AI利用の申告ルールとKDPの最新仕様を確認したうえで、印税ではなく、信頼と導線を取りにいきましょう。</div>
+
+  <p class="tips">※KDPの仕様・印税率は変更されることがあります。最新は公式を確認してください。</p>
+
+</div>
+</body>
+</html>

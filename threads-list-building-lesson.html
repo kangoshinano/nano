@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Threadsでリストを集める仕組み</title>
+<style>
+  body { margin: 0; background: #f6f4ef; }
+  .lesson { --ink:#2b2a28; --muted:#6b675f; --line:#e2ddd2; --card:#fff; --accent:#1f6f6b; --accent-soft:#e3f1ef; --ng:#b54a3a; --ng-soft:#f9e8e4; --ok:#2f7a4a; --ok-soft:#e6f3ea; --warn-soft:#fff4d6; --warn:#8a6414;
+    max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--ink); font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif; line-height: 1.85; font-size: 16px; }
+  .lesson * { box-sizing: border-box; }
+  .lesson h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 8px; }
+  .lesson h2 { font-size: 1.3rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); }
+  .lesson h3 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--accent); }
+  .lesson p { margin: 0 0 12px; }
+  .lesson ul, .lesson ol.plain { margin: 0 0 12px; padding-left: 1.3em; }
+  .lesson li { margin-bottom: 6px; }
+  .lesson .lead { color: var(--muted); }
+  .lesson .tag { display: inline-block; font-size: .8rem; background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-weight: 700; margin-bottom: 10px; }
+  .lesson .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 14px 0; }
+  .lesson .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .lesson .col { border-radius: 12px; padding: 14px 16px; }
+  .lesson .col.ng { background: var(--ng-soft); border: 1px solid #e8c3bb; }
+  .lesson .col.ok { background: var(--ok-soft); border: 1px solid #bfdcc9; }
+  .lesson .col .ttl { font-weight: 700; margin-bottom: 8px; }
+  .lesson .col.ng .ttl { color: var(--ng); }
+  .lesson .col.ok .ttl { color: var(--ok); }
+  .lesson .col ul { margin: 0; padding-left: 1.2em; }
+  .lesson .steps { list-style: none; padding: 0; counter-reset: s; }
+  .lesson .steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 12px 56px; position: relative; margin-bottom: 10px; }
+  .lesson .steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; text-align: center; line-height: 28px; font-weight: 700; }
+  .lesson .steps b { display: block; }
+  .lesson table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 12px 0 16px; font-size: .95rem; }
+  .lesson th, .lesson td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .lesson th { background: var(--accent-soft); width: 30%; }
+  .lesson tr:last-child th, .lesson tr:last-child td { border-bottom: 0; }
+  .lesson .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .note b { color: var(--warn); }
+  .lesson .sample { background: #fbfaf7; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin: 12px 0; font-size: .95rem; }
+  .lesson .sample .lbl { display: inline-block; font-size: .75rem; font-weight: 700; color: #fff; background: var(--muted); border-radius: 6px; padding: 0 8px; margin-bottom: 6px; }
+  .lesson .summary { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .summary b { display: block; margin-bottom: 4px; }
+  .lesson .work { background: var(--card); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .tips { font-size: .9rem; color: var(--muted); }
+  @media (max-width: 600px) {
+    .lesson .compare { grid-template-columns: 1fr; }
+    .lesson th { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<div class="lesson">
+
+  <span class="tag">質問会でよく出る質問から生まれた講義</span>
+  <h1>Threadsでリストを集める仕組み</h1>
+  <p class="lead">「リストを集めたいけれど、まだ広告費を出せない」「広告費をかけるのが精神的につらい」。月数十万円の広告費をかけられるようになるまでには、誰でも時間がかかります。その間のリスト獲得手段として、今いちばん取り組みやすいのがThreadsです。</p>
+
+  <!-- ===== 図解 ===== -->
+  <h2>図解：リストが入る5ステップ</h2>
+  <ol class="steps">
+    <li><b>プレゼント投稿</b>毎日ツリー形式で「LINEに〇〇と送ってね」</li>
+    <li><b>プロフィール</b>プロフィール・固定投稿から公式LINEへ</li>
+    <li><b>キーワード送信</b>LINEに合言葉が届く</li>
+    <li><b>自動応答で配布</b>UTAGEが特典を自動で返す</li>
+    <li><b>リスト → 広告へ</b>売上の一部を広告費に回す</li>
+  </ol>
+  <div class="note"><b>伸ばすコツ</b>　モデリング先を見つける／コメントで回る／返信する／1行目は人の手で直す</div>
+
+  <!-- ===== Part 1 ===== -->
+  <h2>Part 1　なぜ今、Threadsなのか</h2>
+  <ul>
+    <li><b>文章だけで投稿できる</b>：画像や動画を作らなくても始められます。</li>
+    <li><b>表示回数が取りやすい</b>：フォロワーが少なくても、投稿が見られやすい傾向があります。</li>
+    <li><b>リンクがそのまま押せる</b>：投稿内のURLをタップして移動してもらえます。</li>
+    <li><b>伸びている媒体</b>：Metaの発表では、2026年6月時点で世界の月間アクティブ利用者数が5億人を超え、日本での利用時間は前年から大きく伸びていると報じられています。</li>
+  </ul>
+
+  <h3>知っておきたい投稿の仕様</h3>
+  <table>
+    <tr><th>文字数</th><td>1投稿あたり最大500文字です。</td></tr>
+    <tr><th>長文の添付</th><td>2025年9月に「テキスト添付」機能が追加されました。最大10,000字の長文を投稿に添付でき、添付テキストには外部サイトのリンクも入れられます。</td></tr>
+    <tr><th>ツリー</th><td>自分の投稿に自分で続けて返信すると、投稿がつながって表示されます。文字数が足りないときや、「1投稿目で興味→最後で誘導」の流れを作るときに使います。</td></tr>
+    <tr><th>トピックタグ</th><td>1投稿に付けられるのは1つだけです。複数のタグを並べる使い方はできません。</td></tr>
+  </table>
+  <p class="tips">※仕様は変わることがあります。最新の内容はThreadsのヘルプで確認してください。</p>
+
+  <!-- ===== Part 2 ===== -->
+  <h2>Part 2　基本の型：毎日プレゼント企画</h2>
+  <ul>
+    <li>「これが欲しい人はLINEに〇〇と送ってね」という投稿を、プレゼントを変えながら毎日出します。</li>
+    <li>プレゼントは、プロンプト・テンプレート・チェックリスト・ミニ動画など。AIを使えば短時間で作れます。<b>30個作っておけば</b>、毎日どれかからリストが入ってくる状態を目指せます。</li>
+    <li>ツリー形式で投稿をつなげ、一番最後の投稿に「プロフィールのLINEから〇〇と送ってください」と誘導します。</li>
+    <li>プロフィールと固定（ピン留め）投稿にも、LINEへの導線を置きます。</li>
+  </ul>
+
+  <h3>ツリーの組み立て例（3投稿）</h3>
+  <div class="sample"><span class="lbl">1投稿目：フック</span><br>
+    〇〇で悩んでいる人へ。<br>
+    これ、知らないと毎回○○分ムダにしてます。<br>
+    （悩みを一言で。続きが読みたくなる終わり方にする）</div>
+  <div class="sample"><span class="lbl">2投稿目：中身</span><br>
+    やることは3つだけ。<br>
+    ①〇〇 ②〇〇 ③〇〇<br>
+    （ここで役に立つ内容を少し見せる。全部は出さない）</div>
+  <div class="sample"><span class="lbl">3投稿目：誘導</span><br>
+    これを〇〇にまとめた「△△テンプレート」を作りました。<br>
+    欲しい人は、プロフィールのLINEに「〇〇」と送ってください。すぐにお渡しします。</div>
+
+  <h3>プレゼントのネタ出し：10パターン</h3>
+  <table>
+    <tr><th>プロンプト集</th><td>コピペして使えるAIへの指示文。「〇〇用プロンプト10選」</td></tr>
+    <tr><th>テンプレート</th><td>文章・メール・投稿・台本のひな形</td></tr>
+    <tr><th>チェックリスト</th><td>「開始前に確認する10項目」など、1枚で終わるもの</td></tr>
+    <tr><th>ミニ動画</th><td>5分以内で1つの悩みを解決するもの</td></tr>
+    <tr><th>診断・クイズ</th><td>「あなたの〇〇タイプ診断」</td></tr>
+    <tr><th>事例集</th><td>実際にうまくいった例のまとめ（許可を得たもの）</td></tr>
+    <tr><th>比較表</th><td>「〇〇と△△の違い」を1枚で整理</td></tr>
+    <tr><th>一覧リスト</th><td>おすすめのツール・本・サービスの一覧</td></tr>
+    <tr><th>台本・例文</th><td>そのまま読める声かけ例、接客トーク例</td></tr>
+    <tr><th>お試し体験</th><td>個別相談の割引や、体験会の優先案内</td></tr>
+  </table>
+
+  <h3>プレゼントの配布は UTAGE の自動応答で</h3>
+  <p>LINEに特定のキーワードが届いたら、テンプレート（文章＋URL、またはカルーセル）を自動で返す設定にしておきます。キーワードは1つずつ分けて管理すると、どの投稿から来たか分かりやすくなります。</p>
+  <div class="sample"><span class="lbl">自動返信の文例</span><br>
+    プレゼントのリクエストありがとうございます！<br>
+    こちらが「〇〇」の特典です。<br>
+    ▼ダウンロードはこちら<br>
+    https://（特典のURL）<br>
+    <br>
+    使ってみて分からないことがあれば、このLINEでご質問くださいね。</div>
+  <div class="note">
+    <b>ポイント</b>　UTAGEでは、配布後に続けて案内を送りたい場合、キーワード返信だけでなく専用のシナリオを作って誘導する構成が使われることがあります。シナリオ配信を通した方が、登録者データが管理しやすいという報告もあります。設定の細かい操作はUTAGEのマニュアルで確認してください。
+  </div>
+
+  <!-- ===== Part 3 ===== -->
+  <h2>Part 3　自分のアカウントに掛け合わせる</h2>
+  <p>型をそのまま真似しても、他の人と同じ投稿になってしまいます。<b>あなたの専門 × 読者の悩み</b>に合わせて、プレゼントを作りましょう。</p>
+
+  <h3>ステップ1：テーマを3つ以内に絞る</h3>
+  <p>投稿テーマが広がりすぎると、「何の人か」が伝わらず、フォローされにくくなります。メインの専門を軸に、関連するテーマを3つまでにします。</p>
+
+  <h3>ステップ2：悩み × プレゼントの表を作る</h3>
+  <table>
+    <tr><th>読者の悩み</th><td>それを解決するプレゼント → 自分の講座・商品へのつながり</td></tr>
+    <tr><th>例）時間がない</th><td>時短チェックリスト → 時短を仕組みにする講座</td></tr>
+    <tr><th>例）何から始めるか分からない</th><td>最初の1週間のやることリスト → 入門講座</td></tr>
+    <tr><th>例）続かない</th><td>習慣化テンプレート → 継続サポートのコミュニティ</td></tr>
+  </table>
+  <p>プレゼントは、<b>あなたの有料商品への最初の一歩</b>になるものにします。無料でもらって満足して終わるものでは、その後の販売につながりません。</p>
+
+  <h3>ステップ3：一次情報を入れる</h3>
+  <p>AIで投稿を作るときは、セミナーの文字起こし、stand.fmの内容、過去のお客様の相談など、<b>自分だけの情報</b>を渡すほど質が上がります。あなたの体験談を1行入れるだけで、他の投稿との差が出ます。</p>
+
+  <div class="work">
+    <b>✏ ワーク①　最初の10個を決める</b>
+    <p>「（誰）の（悩み）を解決する、（形）のプレゼント」を10個書き出しましょう。そのうち、まず3個を完成させてください。</p>
+  </div>
+
+  <!-- ===== Part 4 ===== -->
+  <h2>Part 4　伸ばすためのコツ</h2>
+  <table>
+    <tr><th>モデリング先を見つける</th><td>自分のジャンルで、プレゼント企画を多く出して大きく伸びているアカウントを探し、企画の出し方・頻度を参考にします。</td></tr>
+    <tr><th>コメントで回る</th><td>自分のターゲットが悩みを投稿しているところに、役立つコメントをしていくと、そこからフォローが増えます。</td></tr>
+    <tr><th>来たコメントに返信する</th><td>Bufferが12.8万件以上の投稿を分析した調査では、自分の投稿へのコメントに返信するとエンゲージメントが約42%高まったと報告されています。</td></tr>
+    <tr><th>最後に質問を置く</th><td>思わず答えたくなる質問を投稿の最後に入れると、返信が付きやすくなります。国内の運用記事でも、Threadsは「いいね」より「返信」が重視されると言われています。</td></tr>
+    <tr><th>1行目は人の手で直す</th><td>AIで作った文章をそのまま出すと反応が取れにくい。冒頭のフックの一言・言い回しを変えるだけで表示回数が大きく変わります。AIっぽさを消し、人間らしさを残します。</td></tr>
+    <tr><th>元データを渡す</th><td>セミナーやstand.fmの文字起こしなど、自分の一次情報を渡すほど質が上がります。</td></tr>
+    <tr><th>伸びた投稿は再利用</th><td>反応が良かった投稿は、切り口を変えてもう一度出します。</td></tr>
+  </table>
+
+  <h3>1行目（フック）の型</h3>
+  <div class="sample">
+    ・数字型：「〇〇を3分で終わらせる方法」<br>
+    ・悩み指摘型：「〇〇で悩んでる人、実はここで損してます」<br>
+    ・失敗談型：「私は〇〇で3ヶ月ムダにしました」<br>
+    ・断言型：「〇〇は、もうやらなくていいです」<br>
+    ・問いかけ型：「〇〇、まだ手作業でやってますか？」</div>
+  <p class="tips">※断言や誇張が強すぎると、信頼を落としたり、規約に触れたりする場合があります。事実の範囲で書きましょう。</p>
+
+  <h3>コメント回りの進め方（1日15分）</h3>
+  <ol class="plain">
+    <li>自分のターゲットが悩みを書いている投稿を5〜10件探す</li>
+    <li>宣伝ではなく、まず役に立つ一言を返す（自分のLINEは書かない）</li>
+    <li>相手から反応があれば、会話を続ける</li>
+    <li>プロフィールを見に来た人のために、プロフィールを整えておく</li>
+  </ol>
+
+  <h3>プロフィールの整え方</h3>
+  <ul>
+    <li>誰の、どんな悩みを解決する人かを1〜2行で書く</li>
+    <li>「プレゼント配布中」と書き、公式LINEへのリンクを置く</li>
+    <li>固定投稿に、一番反応が良かったプレゼント投稿を置く</li>
+  </ul>
+
+  <!-- ===== Part 5 ===== -->
+  <h2>Part 5　店舗・地域ビジネスにも強い</h2>
+  <p>Threadsは地域性の強い投稿が伸びやすい傾向があります（地元のお店やランチの投稿などが回りやすい）。店舗やサロンの集客にも向いています。</p>
+  <ul>
+    <li>店舗用と講座・発信用でターゲットが違うなら、<b>アカウントは分けた方がいい</b>です。</li>
+    <li>手が回らない方のアカウントには、1日数百円の少額広告をかけっぱなしにしておくと、投稿しなくても一定の流入を保てます。</li>
+  </ul>
+
+  <!-- ===== Part 6 ===== -->
+  <h2>Part 6　リンクの貼り方とアカウントの守り方</h2>
+  <div class="compare">
+    <div class="col ng">
+      <div class="ttl">✕ 避けること</div>
+      <ul>
+        <li>同じリンクを何度も貼り続ける</li>
+        <li>同じ文面を毎日出し続ける</li>
+        <li>セミナーやLPを投稿に直接貼りまくる</li>
+        <li>過激な表現・誇大な表現</li>
+      </ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">◯ おすすめ</div>
+      <ul>
+        <li>文面は毎回変える</li>
+        <li>基本はプロフィールの公式LINEへ誘導</li>
+        <li>役に立つ投稿とプレゼント投稿を混ぜる</li>
+        <li>事実の範囲で、誠実に書く</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <b>⚠ 制限がかかったとき</b><br>
+    ThreadsではMetaが、スパムと判断した動きに対して表示や投稿の制限をかける場合があります。具体的な基準は公開されていません。制限や警告が出たら、慌てて同じ操作を繰り返さず、アプリ内の案内に従って確認や異議申し立てを行ってください。短時間に大量のフォロー・コメントを行うのも避けましょう。
+  </div>
+
+  <!-- ===== Part 7 ===== -->
+  <h2>Part 7　数字を見て改善する</h2>
+  <h3>数字の目安</h3>
+  <p>フォロワー1,000人以下のうちは、ビジネス系の投稿で<b>数百インプレッション</b>でも悪くありません。毎日2〜3投稿を続けると、1日1万インプレッションに届くこともあります。リール動画で同じ再生数を取るより、はるかにハードルが低いのがThreadsの強みです。</p>
+
+  <h3>見るべき数字は4つ</h3>
+  <table>
+    <tr><th>① 表示回数</th><td>投稿が見られた数。フック（1行目）の良し悪しが出ます。</td></tr>
+    <tr><th>② プロフィール訪問</th><td>投稿に興味を持った人の数。テーマの一貫性が影響します。</td></tr>
+    <tr><th>③ LINE追加数</th><td>プロフィールの導線が効いているかが分かります。</td></tr>
+    <tr><th>④ キーワード送信数</th><td>プレゼントが魅力的か、案内が分かりやすいかが分かります。</td></tr>
+  </table>
+  <p>どこで数字が落ちているかで、直す場所が決まります。</p>
+  <table>
+    <tr><th>表示回数が少ない</th><td>1行目・投稿時間・テーマを見直す。モデリング先を再確認する。</td></tr>
+    <tr><th>表示はあるがLINE追加が少ない</th><td>プロフィールの文章、固定投稿、プレゼントの魅力を見直す。</td></tr>
+    <tr><th>LINE追加はあるがキーワード送信が少ない</th><td>友だち追加後のあいさつ文に、キーワードの送り方をはっきり書く。</td></tr>
+  </table>
+
+  <h3>流入元を分けて測る</h3>
+  <p>Threadsからの流入を他と区別したい場合は、LINE公式アカウントの「友だち追加経路」で、Threads専用のURLやQRコードを作ると、経路別の友だち追加数が分かります。UTMパラメータを付けて計測する方法もあります。UTAGE側でどこまで確認できるかは、UTAGEのマニュアルで確認してください。</p>
+
+  <!-- ===== Part 8 ===== -->
+  <h2>Part 8　リストが集まったあとの流れ</h2>
+  <ol class="steps">
+    <li><b>配布直後の一言</b>「分からないことがあればご質問ください」で会話を生む</li>
+    <li><b>数日間のステップ配信</b>プレゼントの使い方、お客様の声、あなたの想い</li>
+    <li><b>無料セミナー・個別相談の案内</b>反応のあった人にだけ、次の一歩を案内</li>
+    <li><b>商品の案内</b>モニター価格・正式価格のご案内</li>
+    <li><b>売上の一部を広告費へ</b>少額から広告に回し、資産型の集客へ</li>
+  </ol>
+
+  <!-- ===== Action plan ===== -->
+  <h2>1週間のアクションプラン</h2>
+  <table>
+    <tr><th>1日目</th><td>プロフィールを整える。公式LINEへの導線を置く。</td></tr>
+    <tr><th>2日目</th><td>UTAGEで、キーワード自動応答の設定をする（まず1つ）。</td></tr>
+    <tr><th>3日目</th><td>プレゼントを3つ作る。モデリング先を3アカウント見つける。</td></tr>
+    <tr><th>4日目</th><td>ツリー投稿を1本出す。コメント回りを15分行う。</td></tr>
+    <tr><th>5日目</th><td>2本目を出す。1行目だけ別パターンを試す。</td></tr>
+    <tr><th>6日目</th><td>来たコメントに全部返信する。反応を見て、伸びた投稿の切り口を変えて再投稿する。</td></tr>
+    <tr><th>7日目</th><td>数字（表示・訪問・LINE追加・キーワード送信）を見て、来週直す場所を1つ決める。</td></tr>
+  </table>
+
+  <div class="work">
+    <b>✏ ワーク②　最初の3投稿を書く</b>
+    <p>ワーク①で決めたプレゼントのうち1つで、「フック→中身→誘導」の3投稿を書いてみましょう。1投稿目の1行目は、フックの型から3パターン出して、一番強いものを選びます。</p>
+  </div>
+
+  <div class="summary"><b>まとめ</b>
+    広告費を出せるまでの間は、Threadsで「毎日プレゼント企画→LINEにキーワード送信→自動応答で配布」の型を回す。プレゼントは自分の専門×読者の悩みで作り、自分の商品への最初の一歩にする。モデリング先とコメント回り、来たコメントへの返信で伸ばし、1行目は人の手で直す。同じ文面とリンクの連投は避け、数字を見て直す場所を決める。リストが集まってきたら、その売上の一部を広告に回して、資産型の集客へつなげていきましょう。</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>肝は自分、雑務はAI</title>
+<style>
+  body { margin: 0; background: #f6f4ef; }
+  .lesson { --ink:#2b2a28; --muted:#6b675f; --line:#e2ddd2; --card:#fff; --accent:#1f6f6b; --accent-soft:#e3f1ef; --ng:#b54a3a; --ng-soft:#f9e8e4; --ok:#2f7a4a; --ok-soft:#e6f3ea; --warn-soft:#fff4d6; --warn:#8a6414;
+    max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--ink); font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif; line-height: 1.85; font-size: 16px; }
+  .lesson * { box-sizing: border-box; }
+  .lesson h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 8px; }
+  .lesson h2 { font-size: 1.3rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); }
+  .lesson h3 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--accent); }
+  .lesson p { margin: 0 0 12px; }
+  .lesson ul, .lesson ol.plain { margin: 0 0 12px; padding-left: 1.3em; }
+  .lesson li { margin-bottom: 6px; }
+  .lesson .lead { color: var(--muted); }
+  .lesson .tag { display: inline-block; font-size: .8rem; background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-weight: 700; margin-bottom: 10px; }
+  .lesson .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .lesson .col { border-radius: 12px; padding: 14px 16px; }
+  .lesson .col.ng { background: var(--ng-soft); border: 1px solid #e8c3bb; }
+  .lesson .col.ok { background: var(--ok-soft); border: 1px solid #bfdcc9; }
+  .lesson .col.me { background: var(--accent-soft); border: 1px solid #bcdcd8; }
+  .lesson .col .ttl { font-weight: 700; margin-bottom: 8px; }
+  .lesson .col.ng .ttl { color: var(--ng); }
+  .lesson .col.ok .ttl { color: var(--ok); }
+  .lesson .col.me .ttl { color: var(--accent); }
+  .lesson .col ul { margin: 0; padding-left: 1.2em; }
+  .lesson .banner { background: var(--accent); color: #fff; text-align: center; font-weight: 700; border-radius: 12px; padding: 12px 16px; margin: 14px 0; }
+  .lesson .steps { list-style: none; padding: 0; counter-reset: s; }
+  .lesson .steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 12px 56px; position: relative; margin-bottom: 10px; }
+  .lesson .steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; text-align: center; line-height: 28px; font-weight: 700; }
+  .lesson .steps b { display: block; }
+  .lesson table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 12px 0 16px; font-size: .95rem; }
+  .lesson th, .lesson td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .lesson th { background: var(--accent-soft); width: 30%; }
+  .lesson tr:last-child th, .lesson tr:last-child td { border-bottom: 0; }
+  .lesson .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .note b { color: var(--warn); }
+  .lesson .case { background: var(--ng-soft); border-left: 4px solid var(--ng); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .case b { color: var(--ng); }
+  .lesson .prompt-box { margin: 14px 0; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #fff; }
+  .lesson .prompt-box .hd { background: var(--accent); color: #fff; font-weight: 700; font-size: .9rem; padding: 6px 14px; }
+  .lesson .prompt-box pre { margin: 0; padding: 14px 16px; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .9rem; line-height: 1.75; background: #fbfaf7; user-select: all; -webkit-user-select: all; }
+  .lesson .summary { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .summary b { display: block; margin-bottom: 4px; }
+  .lesson .work { background: var(--card); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .tips { font-size: .9rem; color: var(--muted); }
+  @media (max-width: 600px) {
+    .lesson .compare { grid-template-columns: 1fr; }
+    .lesson th { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<div class="lesson">
+
+  <span class="tag">質問会・グルコンでよく出る質問から生まれた講義</span>
+  <h1>肝は自分、雑務はAI</h1>
+  <p class="lead">AIを使い始めると、つい何でも任せたくなります。ただ、グルコンでは「AIに任せすぎて、内容が浅くなった」「確認をしなかったせいで、配信ミスが起きた」という声も出ています。このレッスンでは、AIに任せる部分と自分でやる部分の線引きを整理します。</p>
+
+  <!-- ===== 図解 ===== -->
+  <h2>図解：肝は自分、雑務はAI</h2>
+  <div class="compare">
+    <div class="col me">
+      <div class="ttl">自分でやる（肝）</div>
+      <ul>
+        <li>何を伝えたいかを決める</li>
+        <li>セミナーの構成と、自分の考えの整理</li>
+        <li>お客様との会話、個別相談</li>
+        <li>最終チェック（配信内容・リンク・日時）</li>
+      </ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">AIに任せる（雑務）</div>
+      <ul>
+        <li>下書き、言い換え、要約</li>
+        <li>文字起こし、記事化、投稿への変換</li>
+        <li>数値の集計と比較</li>
+        <li>画像やスライドのたたき台</li>
+      </ul>
+    </div>
+  </div>
+  <div class="banner">肝に時間を使うために、雑務をAIで効率化する</div>
+
+  <!-- ===== Part 1 ===== -->
+  <h2>1. AIの答えは、渡した材料の質で決まる</h2>
+  <p>ある受講生さんは、自分の講座のナレッジを全部AIに入れて、セミナーの構成案や資料を作っていました。ところが「AIが先に作ってくれるので、気持ちが乗らない」と感じたそうです。</p>
+  <p>理由はシンプルです。<b>自分の中で言葉にできているのが7割なら、AIに渡す元データも7割</b>です。AIはその7割を整理して見出しを立てるので、仕上がりも7割止まりになります。</p>
+  <p>自分で構成を考えて資料を作ると、作りながら「ここが抜けている」「これを伝えたい」と考えが深まっていきます。<b>残りの3割は、この過程でしか出てきません。</b></p>
+
+  <div class="note">
+    <b>AIは「自分の考えを整理して広げる道具」です</b><br>
+    考えそのものを代わりに作ってはくれません。大事なセミナーや講座の骨組みは、一度自分の手で作ってみましょう。
+  </div>
+
+  <h3>おすすめの順番：自分 → AI → 自分</h3>
+  <ol class="steps">
+    <li><b>自分：骨組みを手で書く</b>きれいでなくてOK。箇条書きで「誰に・何を・どうなってほしいか」を書き出す</li>
+    <li><b>AI：整理して、穴を探してもらう</b>抜けている点、順番の悪い点、聞かれそうな質問を出してもらう</li>
+    <li><b>自分：穴を埋めて、言葉を選び直す</b>AIの案をそのまま採用せず、「自分ならこう言う」に書き換える</li>
+  </ol>
+
+  <div class="prompt-box"><div class="hd">📋 コピー用：自分の考えを引き出してもらう（壁打ち）</div>
+<pre>私は「【テーマ：例：初心者向けのKindle出版講座】」のセミナーを作ろうとしています。
+下に、私が今考えていることを箇条書きで書きます。
+
+【ここに、箇条書きで骨組みを書く】
+
+あなたの役割は、私の代わりに構成を作ることではありません。
+私の考えを引き出し、整理する「聞き役」です。次の順番で進めてください。
+
+1. まず、私の考えを読んで、足りない点・曖昧な点を5つ、質問の形で出してください
+2. 私が1つずつ答えます。答えるたびに、次の質問を1つだけ出してください
+3. 質問が出尽くしたら、私の言葉をなるべく変えずに、構成案にまとめてください
+4. 構成案の中で「ここは自分の言葉で補った方がいい」という箇所に印をつけてください
+
+禁止：私が話していないことを、勝手に付け足さないでください。</pre></div>
+
+  <!-- ===== Part 2 ===== -->
+  <h2>2. 「一次情報」がないと、それっぽい文章しか出てこない</h2>
+  <p>発信のネタや文章をAIに頼むとき、元になる材料がないと、当たり障りのない、誰でも書けそうな文章しか出てきません。</p>
+  <h3>材料になるもの</h3>
+  <ul>
+    <li>個別相談に来た人が言った、あの一言</li>
+    <li>Instagramに来たコメント</li>
+    <li>コミュニティのメンバーが話していたつまずき</li>
+    <li>商談や個別相談の録画の中で、自分が話していた良い説明</li>
+  </ul>
+  <p>こうした<b>自分だけが見聞きした一次情報</b>を起点に「これをstand.fmの台本にしたい」と頼めば、AIは骨組みを作ってくれます。</p>
+
+  <h3>一次情報をためる仕組み</h3>
+  <table>
+    <tr><th>お客様の一言</th><td>個別相談・グルコン・DMで印象に残った言葉を、スマホのメモに1行で残す（誰かが特定されないようにする）</td></tr>
+    <tr><th>コメント・質問</th><td>SNSのコメントや質問会の質問を、週に1回まとめて保存する</td></tr>
+    <tr><th>自分の説明</th><td>録画や音声の中で「うまく説明できた」箇所に印をつけ、文字起こしして保存する</td></tr>
+    <tr><th>失敗談・気づき</th><td>その日にあったことを、1日1行で記録する</td></tr>
+  </table>
+
+  <h3>材料 → 変換先の例</h3>
+  <table>
+    <tr><th>お客様の一言</th><td>stand.fmの台本、Threadsの投稿、メルマガの冒頭</td></tr>
+    <tr><th>よくある質問</th><td>FAQ、ステップ配信、noteの記事</td></tr>
+    <tr><th>自分の良い説明</th><td>講座のレッスン、Kindleの原稿、スライド</td></tr>
+  </table>
+
+  <div class="prompt-box"><div class="hd">📋 コピー用：一次情報から台本を作る</div>
+<pre>次は、私が実際に体験した一次情報です。
+
+【ここに、お客様の一言・コメント・自分の説明などを貼る】
+
+これを材料にして、【stand.fmの5分の台本／Threadsの投稿3本／メルマガ1通】の下書きを作ってください。
+
+条件：
+・材料に書いてあることだけを使い、事実や数字を勝手に足さない
+・お客様が特定されそうな情報は、ぼかして書く
+・文章は、私が話しているような口調に近づける（難しい言葉は使わない）
+・最後に、「ここは私が自分の言葉で書き直した方がいい」という箇所を3つ教えてください</pre></div>
+
+  <!-- ===== Part 3 ===== -->
+  <h2>3. 自分の言葉で伝えたいとき</h2>
+  <p>「ChatGPTに頼りがちで、自分の言葉が出てこない」という相談もあります。考えて考えて分からなくなり、結局AIに戻ってしまうパターンです。</p>
+  <p>ヒントは、<b>「相手が思っている常識を壊す一言」</b>を探すことです。「それって普通じゃないの？」と相手が思っているところを突くと、言葉が刺さります。</p>
+
+  <h3>常識を壊す一言を探す3つの問い</h3>
+  <table>
+    <tr><th>問い①</th><td>お客様は、最初に何を「当たり前」だと思っていたか？</td></tr>
+    <tr><th>問い②</th><td>その「当たり前」を、私はなぜ違うと思っているか？</td></tr>
+    <tr><th>問い③</th><td>それを、お客様に実際に言ったとき、どんな反応があったか？</td></tr>
+  </table>
+  <div class="compare">
+    <div class="col ng">
+      <div class="ttl">✕ AIの下書きのまま</div>
+      <ul><li>「SNS集客は継続が大切です」</li><li>誰でも言える、当たり障りのない一般論</li></ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">◯ 常識を壊した一言</div>
+      <ul><li>「毎日投稿するのを、いったんやめてみてください」</li><li>問い①〜③に答えると、こうした言葉が出てくる</li></ul>
+    </div>
+  </div>
+
+  <h3>AIの下書きを「自分の言葉」にする手順</h3>
+  <ol class="steps">
+    <li><b>1行目を捨てて、自分で書き直す</b>冒頭のフックの一言だけは、必ず自分で作る</li>
+    <li><b>「AIっぽい言い回し」を消す</b>「〜することが重要です」「〜と言えるでしょう」「いかがでしたか」など</li>
+    <li><b>具体例を1つ、自分の体験に差し替える</b>一般的な例 → 実際にあった話</li>
+    <li><b>声に出して読む</b>自分が普段言わない言葉があれば、言い換える</li>
+  </ol>
+
+  <!-- ===== Part 4 ===== -->
+  <h2>4. 最終チェックは必ず自分で</h2>
+  <div class="case">
+    <b>実際にあった事例</b><br>
+    Claude CodeからUTAGEに配信を設定して、問題なく流れていると思っていたら、セミナーのアーカイブ配信だけが流れていませんでした。確認を怠ったことが原因で、対応が大変だったそうです。
+  </div>
+  <p>AIに配信設定まで任せる場合も、<b>配信日時・リンク先・配信対象・本文</b>は、自分の目で一度確認してから公開しましょう。</p>
+
+  <h3>公開前チェックリスト（配信・投稿）</h3>
+  <table>
+    <tr><th>日時</th><td>配信日・時間は合っているか。タイムゾーンや午前／午後の間違いはないか</td></tr>
+    <tr><th>対象</th><td>誰に配信されるか（全員／タグ／セグメント）。除外すべき人は外れているか</td></tr>
+    <tr><th>本文</th><td>誤字・名前の差し込み・事実・数字は合っているか。AI特有の言い回しが残っていないか</td></tr>
+    <tr><th>リンク</th><td>すべてのリンクを、実際にタップして開いて確認する。リンク先の内容・日付は最新か</td></tr>
+    <tr><th>配信の抜け</th><td>予定していた配信の<b>全件</b>が、予約一覧に並んでいるか（1通だけ抜けていないか）</td></tr>
+    <tr><th>テスト配信</th><td>自分宛てに送って、スマホで見え方を確認する</td></tr>
+    <tr><th>配信後</th><td>配信後に、実際に届いたか・反応が出ているかを見る</td></tr>
+  </table>
+
+  <div class="note">
+    <b>配信をAIに任せるときのルール（おすすめ）</b><br>
+    ・「公開」ボタンは、自分で押す（AIには「下書き保存」までを任せる）<br>
+    ・設定が終わったら、AIに「設定した配信の一覧（日時・対象・件名・リンク）」を表にして出させ、自分の予定と1件ずつ照らし合わせる<br>
+    ・初めての配信パターンは、必ず少人数（自分だけ・テスト用タグ）で試してから、全体に出す
+  </div>
+
+  <div class="prompt-box"><div class="hd">📋 コピー用：配信前の一覧チェック</div>
+<pre>いま設定した配信について、次の項目を表にして出してください。
+・配信名／配信日時／配信対象／件名／本文の冒頭30文字／本文中のリンクURL（すべて）
+・下書きなのか、公開済みなのか（状態）
+
+出した表のあとに、次の確認もしてください。
+・私が伝えた予定（【ここに予定の一覧を貼る】）と比べて、抜けている配信はないか
+・日時やリンクに、矛盾や誤りと思われる点はないか
+断定せず、「確認が必要な点」として挙げてください。</pre></div>
+
+  <!-- ===== Part 5 ===== -->
+  <h2>5. 仕分けの目安</h2>
+  <table>
+    <tr><th>自分でやる</th><td>何を伝えたいかを決める<br>講座・セミナーの骨組み<br>お客様との会話、個別相談<br>公開前の最終チェック</td></tr>
+    <tr><th>AIに任せていい</th><td>下書き、言い換え、要約<br>文字起こし、記事化、SNS投稿への変換<br>数値の集計と比較<br>画像・スライドのたたき台</td></tr>
+  </table>
+
+  <h3>迷ったときの3つの質問</h3>
+  <table>
+    <tr><th>① 代わりがきくか</th><td>私でなくてもできる作業か？ → きくなら、AIに任せる</td></tr>
+    <tr><th>② 間違えたら困るか</th><td>お金・信用・お客様に直接影響するか？ → するなら、AIが作っても自分で確認する</td></tr>
+    <tr><th>③ 私の「らしさ」が出るか</th><td>自分の考え・言葉・経験が価値になる部分か？ → なるなら、自分でやる</td></tr>
+  </table>
+
+  <h3>よくある失敗と対策</h3>
+  <table>
+    <tr><th>AIに先に作らせて、気持ちが乗らない</th><td>骨組みは自分で書く。AIは「聞き役」と「整理役」にする</td></tr>
+    <tr><th>それっぽいだけで、浅い文章になる</th><td>一次情報（お客様の一言・自分の説明）を渡す</td></tr>
+    <tr><th>自分の言葉が出てこない</th><td>常識を壊す一言を探し、冒頭の1行だけは必ず自分で書く</td></tr>
+    <tr><th>配信ミスが起きた</th><td>日時・対象・リンク・本文・配信の抜けを、公開前に自分の目で確認する</td></tr>
+    <tr><th>AIの出力を事実と思い込む</th><td>数字・固有名詞・法律・料金は、必ず元の資料で確かめる</td></tr>
+  </table>
+
+  <div class="work">
+    <b>✏ ワーク　自分の仕事を「肝」と「雑務」に仕分ける</b>
+    <ol class="plain">
+      <li>この1週間でやった仕事を、10個書き出す</li>
+      <li>それぞれに、「肝（自分）」「雑務（AI）」「確認だけ自分」のどれかを書く</li>
+      <li>「雑務（AI）」のうち、一番時間がかかっているものを1つ選ぶ</li>
+      <li>それを、来週AIに任せるための「材料」と「指示文」を用意する</li>
+      <li>浮いた時間で何をするか（お客様との会話、構成づくりなど）を決める</li>
+    </ol>
+  </div>
+
+  <div class="summary"><b>まとめ</b>
+    AIの仕上がりは、渡した材料で決まります。考えの整理とお客様との会話という「肝」は自分でやり、そのための時間を作るために雑務をAIで効率化しましょう。一次情報を材料にして、公開前の最終チェックは必ず自分の目で行います。</div>
+
+</div>
+</body>
+</html>

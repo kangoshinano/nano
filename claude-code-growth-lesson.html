@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同じミスを繰り返さないClaude Codeの育て方</title>
+<style>
+  body { margin: 0; background: #f6f4ef; }
+  .lesson { --ink:#2b2a28; --muted:#6b675f; --line:#e2ddd2; --card:#fff; --accent:#1f6f6b; --accent-soft:#e3f1ef; --ng:#b54a3a; --ng-soft:#f9e8e4; --ok:#2f7a4a; --ok-soft:#e6f3ea; --warn-soft:#fff4d6; --warn:#8a6414;
+    max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--ink); font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif; line-height: 1.85; font-size: 16px; }
+  .lesson * { box-sizing: border-box; }
+  .lesson h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 8px; }
+  .lesson h2 { font-size: 1.3rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); }
+  .lesson h3 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--accent); }
+  .lesson p { margin: 0 0 12px; }
+  .lesson ul, .lesson ol.plain { margin: 0 0 12px; padding-left: 1.3em; }
+  .lesson li { margin-bottom: 6px; }
+  .lesson .lead { color: var(--muted); }
+  .lesson .tag { display: inline-block; font-size: .8rem; background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-weight: 700; margin-bottom: 10px; }
+  .lesson .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .lesson .col { border-radius: 12px; padding: 14px 16px; }
+  .lesson .col.ng { background: var(--ng-soft); border: 1px solid #e8c3bb; }
+  .lesson .col.ok { background: var(--ok-soft); border: 1px solid #bfdcc9; }
+  .lesson .col .ttl { font-weight: 700; margin-bottom: 8px; }
+  .lesson .col.ng .ttl { color: var(--ng); }
+  .lesson .col.ok .ttl { color: var(--ok); }
+  .lesson .col ul { margin: 0; padding-left: 1.2em; }
+  .lesson .banner { background: var(--accent); color: #fff; text-align: center; font-weight: 700; border-radius: 12px; padding: 12px 16px; margin: 14px 0; }
+  .lesson .steps { list-style: none; padding: 0; counter-reset: s; }
+  .lesson .steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 12px 56px; position: relative; margin-bottom: 10px; }
+  .lesson .steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; text-align: center; line-height: 28px; font-weight: 700; }
+  .lesson .steps b { display: block; }
+  .lesson table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 12px 0 16px; font-size: .95rem; }
+  .lesson th, .lesson td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .lesson th { background: var(--accent-soft); width: 30%; }
+  .lesson tr:last-child th, .lesson tr:last-child td { border-bottom: 0; }
+  .lesson .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .note b { color: var(--warn); }
+  .lesson .prompt-box { margin: 14px 0; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #fff; }
+  .lesson .prompt-box .hd { background: var(--accent); color: #fff; font-weight: 700; font-size: .9rem; padding: 6px 14px; }
+  .lesson .prompt-box pre { margin: 0; padding: 14px 16px; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .9rem; line-height: 1.75; background: #fbfaf7; user-select: all; -webkit-user-select: all; }
+  .lesson .summary { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .summary b { display: block; margin-bottom: 4px; }
+  .lesson .work { background: var(--card); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .tips { font-size: .9rem; color: var(--muted); }
+  @media (max-width: 600px) {
+    .lesson .compare { grid-template-columns: 1fr; }
+    .lesson th { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<div class="lesson">
+
+  <span class="tag">質問会・グルコンでよく出る質問から生まれた講義</span>
+  <h1>同じミスを繰り返さないClaude Codeの育て方</h1>
+  <p class="lead">Claude Codeを使い始めた人から多いのが「毎回同じところでミスをする」「すぐ使えなくなる（使用制限）」「パソコンの中を全部見られるのが怖い」という相談です。このレッスンでは、Claude Codeを安心して長く使うためのコツをまとめます。</p>
+
+  <!-- ===== 図解 ===== -->
+  <h2>図解：同じミスを繰り返さない育て方</h2>
+  <ol class="steps">
+    <li><b>部屋を分ける</b>メルマガ用・LINE用など、用途ごとにチャットを分ける</li>
+    <li><b>ひな形を渡す</b>うまくいった前回分を、見本として読ませる</li>
+    <li><b>スキル化する</b>「これをスキルにして」で、手順を保存させる</li>
+    <li><b>一覧で確認</b>「スキルを一覧で出して」で、何を覚えたか確かめる</li>
+  </ol>
+  <div class="banner">チャットは閉じると忘れる。覚えてほしいことは必ずスキルにする</div>
+
+  <!-- ===== 前提 ===== -->
+  <h2>0. 知っておく前提：Claude Codeの「記憶」は3種類</h2>
+  <p>Claude Codeは、チャットを新しくすると、前のやり取りを覚えていません。「前に言ったのに」が起きるのはこのためです。覚えさせたいことは、置き場所を選んで保存します。</p>
+  <table>
+    <tr><th>チャット（会話）</th><td><b>閉じると忘れる</b>。その場の指示・修正はここ。長くなると、序盤の指示を忘れやすくなります。</td></tr>
+    <tr><th>CLAUDE.md</th><td><b>毎回読み込まれる、常設のメモ</b>。「いつも守ってほしい短いルール」（呼び方、署名、禁止事項など）を書きます。長くしすぎると、かえって負担になります。</td></tr>
+    <tr><th>スキル</th><td><b>手順書</b>。「メルマガの書き方」「LINE配信の型」など、<b>作業ごとの手順</b>を保存します。必要なときだけ読まれます。</td></tr>
+  </table>
+  <div class="note">
+    <b>使い分けの目安</b><br>
+    「どの作業でも常に守ってほしい」→ CLAUDE.md／「この作業のときだけ使う手順」→ スキル／「今回だけの指示」→ チャット
+  </div>
+
+  <!-- ===== Part 1 ===== -->
+  <h2>1. 毎回同じミスをするときは「スキル化」</h2>
+  <p>たとえば、メルマガやLINEの下書きを作ってもらうたびに、次のようなミスが繰り返されることがあります。</p>
+  <ul>
+    <li>画像が中央ではなく左寄せになる</li>
+    <li>入れてと言った文章が入っていない</li>
+  </ul>
+  <p>そこで、絶対に覚えておいてほしいことは<b>「スキル化して」</b>と指示して、手順として保存させます。</p>
+  <ul>
+    <li>メルマガのライティングのルール</li>
+    <li>LINE配信の型</li>
+    <li>画像の配置や、必ず入れる署名</li>
+  </ul>
+  <p>用途ごとに1つずつスキルにまとめておくと、次からはそのスキルを読んで作業してくれます。</p>
+
+  <h3>スキルの仕組み（ちょっとだけ）</h3>
+  <ul>
+    <li>スキルは、フォルダの中の<b>SKILL.md</b>という1つのファイルです。上に「名前（name）」と「いつ使うか（description）」、その下に「手順」を書きます。</li>
+    <li>置き場所は2種類あります。<b>自分用</b>（全部のプロジェクトで使える）と、<b>プロジェクト用</b>（そのフォルダの中だけで使える）です。</li>
+    <li>Claude Codeは、最初に各スキルの<b>名前と説明だけ</b>を読み、作業に合うと判断したときに中身を読みます。そのため、<b>「何をするスキルか」と「いつ使うか」を、説明にはっきり書く</b>ことが大切です。</li>
+  </ul>
+
+  <h3>スキル化の手順</h3>
+  <ol class="steps">
+    <li><b>うまくいった作業を1つ選ぶ</b>メルマガ1通、LINE配信1本など</li>
+    <li><b>「これをスキルにして」と頼む</b>ミスの修正内容（左寄せNG、署名必須など）も伝える</li>
+    <li><b>名前と使う場面を確認する</b>「いつ使うスキルか」が1行で言えるか</li>
+    <li><b>次の作業で使ってみる</b>新しいチャットで、スキルを使って作らせる</li>
+    <li><b>ミスが出たら、スキルに追記する</b>「今のミスを、スキルに書き足して」</li>
+  </ol>
+
+  <div class="prompt-box"><div class="hd">📋 コピー用：今の作業をスキルにする</div>
+<pre>今やった作業を、あとで毎回同じ品質で再現できるように「スキル」として保存してください。
+
+スキルの名前：【例：メルマガ作成】
+いつ使うか：【例：メルマガの下書きを作ってと頼まれたとき】
+
+必ず入れてほしい内容：
+・手順（どの順番で何をするか）
+・今回のやり取りで私が直した点（同じミスを繰り返さないための注意）
+　例：画像は中央寄せにする／冒頭にお名前の差し込みを入れる／最後に署名を必ず入れる
+・出力の形（見出し、文字数の目安、口調）
+・やってはいけないこと
+
+保存したら、スキルの名前と、保存した場所を教えてください。</pre></div>
+
+  <div class="prompt-box"><div class="hd">📋 コピー用：ミスをスキルに書き足す</div>
+<pre>いまのミスを、二度と繰り返さないように、【スキル名】に注意点として書き足してください。
+
+今回のミス：【例：画像が左寄せになっていた。中央寄せにするのが正しい】
+
+書き足したあと、スキルの該当部分を見せてください。</pre></div>
+
+  <h3>何をスキルにしたかは、一覧で確認</h3>
+  <p>何をスキルにしたかは、自分でも忘れがちです。<b>「私のスキルを一覧で出して」</b>と聞くと、保存されているスキルがまとめて表示されます。名前と説明を見て、重複や古いものがないか、ときどき整理しましょう。</p>
+
+  <h3>スキルにするとよい作業の目安</h3>
+  <table>
+    <tr><th>同じ指示を何度も出している</th><td>貼り付けるたびに同じ説明をしているなら、スキルにする</td></tr>
+    <tr><th>同じミスが2回出た</th><td>3回目を起こさないために、スキルに注意点を足す</td></tr>
+    <tr><th>手順が決まっている作業</th><td>メルマガ、LINE配信、台本作成、集計、レポート作成など</td></tr>
+    <tr><th>他の人に引き継げそうな作業</th><td>スキルの形にしておくと、手順書にもなる</td></tr>
+  </table>
+  <p class="tips">※スキルの作り方や置き場所は、Claude Codeの更新で変わることがあります。うまくいかないときは、公式ドキュメント（code.claude.com の Skills のページ）で確認してください。</p>
+
+  <!-- ===== Part 2 ===== -->
+  <h2>2. チャットは用途ごとに「部屋」を分ける</h2>
+  <p>1つのチャットで何でもやると、話が混ざって精度が落ちます。メルマガ用、LINE用、分析用のように、用途ごとにチャット（部屋）を分けて使いましょう。</p>
+  <p>うまくいった前回の作業がある場合は、それを<b>ひな形</b>として渡すと、同じ形で作ってくれます。Claude Code自身も「前回のものをひな形として渡してもらえると精度が上がる」と答えてくれます。</p>
+
+  <h3>部屋の分け方の例</h3>
+  <table>
+    <tr><th>メルマガの部屋</th><td>下書き作成、件名案、チェック</td></tr>
+    <tr><th>LINEの部屋</th><td>配信文、シナリオの作成</td></tr>
+    <tr><th>分析の部屋</th><td>数値の集計、比較</td></tr>
+    <tr><th>相談の部屋</th><td>企画の壁打ち、アイデア出し</td></tr>
+  </table>
+
+  <h3>会話が長くなったとき</h3>
+  <table>
+    <tr><th>/clear</th><td>会話をリセットして、<b>別の作業</b>を始めるとき。前の会話は引き継がれません。</td></tr>
+    <tr><th>/compact</th><td><b>同じ作業を続けたい</b>けれど、会話が長くなったとき。それまでの会話を要約して、続きを進めます。</td></tr>
+  </table>
+  <ul>
+    <li>会話が長くなると、序盤に伝えた指示を忘れやすくなります。長引いたら、残したい内容を整理してから新しい部屋で再開するのがおすすめです。</li>
+    <li>途中までの結果は、<b>ファイルに保存</b>しておくと、新しい部屋でも「このファイルを読んで続きを」と頼めます。</li>
+  </ul>
+  <p class="tips">※コマンドの名前や挙動は、Claude Codeの更新で変わることがあります。</p>
+
+  <!-- ===== Part 3 ===== -->
+  <h2>3. 使用制限とモデルの使い分け</h2>
+  <table>
+    <tr><th>使用量には上限がある</th><td>一気に使い切ると、一定時間（目安5時間）使えなくなります。<br><b>対策</b>：使用状況の画面で残量を確認しながら、<b>まとめて指示を出す → 休む</b>のリズムで使う</td></tr>
+    <tr><th>週ごとの上限もある</th><td>5時間の枠とは別に、1週間単位の上限もあります。5時間たっても、週の上限に達していると使えないことがあります。</td></tr>
+    <tr><th>上位モデルほど使用量の減りが早い</th><td><b>対策</b>：スキルやルーティン作業の最初の仕組み作りだけ上位モデル、毎日の作業は標準モデルで回す</td></tr>
+  </table>
+
+  <h3>使用量を節約するコツ</h3>
+  <ul>
+    <li><b>指示はまとめて出す</b>：細かく何度もやり取りするより、条件を揃えて1回で頼む</li>
+    <li><b>会話を長引かせない</b>：長い会話は、毎回それまでの内容を読み直すため、使用量が増えやすい</li>
+    <li><b>簡単な作業は標準モデルで</b>：誤字チェック、整形、定型の作業など</li>
+    <li><b>スキルを整える</b>：毎回の説明を省けるうえ、やり直しが減る</li>
+    <li><b>大きなファイルを丸ごと読ませない</b>：必要な部分だけ渡す</li>
+  </ul>
+  <p class="tips">※プランごとの上限や、確認用の画面・コマンドは、変更されることがあります。最新の内容は、Claudeの公式ヘルプとアカウントの使用状況画面で確認してください。</p>
+
+  <!-- ===== Part 4 ===== -->
+  <h2>4. 安全に使うためのルール</h2>
+  <div class="note">
+    <b>最初に決めておきたい3つのルール</b><br>
+    Claude Codeは、許可するとパソコンの中のファイルを読んだり、ブラウザを操作したりできます。便利な反面、最初にルールを決めておくことが大切です。
+  </div>
+  <ol class="steps">
+    <li><b>課金とパスワードのルールを覚えさせる</b>「課金はしない」「パスワードは覚えない」と、最初にルールとして覚えさせる</li>
+    <li><b>読ませたくないものは、専用フォルダへ</b>APIキーやパスワードなど、絶対に読ませたくないものは専用のフォルダ（シークレットフォルダ）に入れて、「このフォルダは読まない」とルールにしておく</li>
+    <li><b>お金に直結するサービスにはつながない</b>会計ソフト、ネットバンキング、決済の管理画面など</li>
+  </ol>
+  <p>パソコン自体のウイルス対策も、あわせてしっかりしておきましょう。</p>
+
+  <h3>「お願い」より強い「禁止」の設定</h3>
+  <p>「読まないで」とお願い（CLAUDE.mdやチャット）するだけでは、必ず守られる保証はありません。<b>絶対に読ませたくないファイルは、設定で「禁止（deny）」にしておく</b>とより安全です。</p>
+  <table>
+    <tr><th>お願い（ルールを書く）</th><td>CLAUDE.mdやチャットで「このフォルダは読まない」と伝える。<b>強制力はない</b>ので、補助として使う。</td></tr>
+    <tr><th>禁止（設定ファイル）</th><td>設定ファイルに「このファイルは読めない」と書く。Claude Codeの仕組みとして止める。</td></tr>
+  </table>
+  <div class="prompt-box"><div class="hd">📋 設定ファイルの書き方の例（プロジェクトの .claude/settings.json）</div>
+<pre>{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}</pre></div>
+  <ul>
+    <li>上の例は、「.env」や「secrets」フォルダの中身を読ませない設定です。フォルダ名は、自分の環境に合わせて書き換えます。</li>
+    <li>設定したら、<b>実際にそのファイルを読ませようとして、止まることを確認</b>します。書き方を間違えると、効かないことがあります。</li>
+    <li>ファイルの読み取りを止めても、別の方法（コマンドの実行など）で中身が見えてしまう場合があります。<b>そもそも大事な情報は、作業フォルダの外に置く</b>のが一番確実です。</li>
+    <li>設定ファイルの書き方に自信がなければ、Claude Codeに「このフォルダを読めないように設定して。設定後、読めないことをテストして」と頼むのも手です。</li>
+  </ul>
+
+  <h3>許可の確認は、読み飛ばさない</h3>
+  <ul>
+    <li>Claude Codeが「このコマンドを実行してよいか」と聞いてきたときは、<b>内容を読んでから</b>許可する</li>
+    <li>「ファイルを消す」「外部に送る」「お金に関わる」操作は、特に慎重に</li>
+    <li>大事なファイルは、<b>作業前にバックアップ</b>を取っておく</li>
+    <li>作業するフォルダを、<b>専用の場所</b>に限定する（パソコン全体を作業場にしない）</li>
+  </ul>
+
+  <!-- ===== Part 5 ===== -->
+  <h2>5. SNSの自動投稿は「下書き保存」までが安心</h2>
+  <p>Threadsなどの投稿を完全に自動化すると、AIが想定外の動きをしたときに1日に大量に投稿してしまい、アカウントが停止されたという例もあります。</p>
+  <div class="compare">
+    <div class="col ng">
+      <div class="ttl">✕ 完全自動</div>
+      <ul>
+        <li>AIが考えて、AIが投稿ボタンまで押す</li>
+        <li>想定外の動きに、気づけない</li>
+        <li>アカウント停止のリスク</li>
+      </ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">◯ 下書きまでAI</div>
+      <ul>
+        <li>「毎朝9時に下書き保存しておいて」までをAIに任せる</li>
+        <li>投稿ボタンは自分で押す</li>
+        <li>内容・リンク・日時を、目で見て確認できる</li>
+      </ul>
+    </div>
+  </div>
+  <p>少し手間は残りますが、アカウントを失うリスクに比べればずっと安全です。</p>
+  <div class="note">
+    <b>配信・投稿は「公開前に自分の目で確認」</b><br>
+    UTAGEなどの配信設定をClaude Codeに任せる場合も、日時・対象・リンク・本文、そして<b>予定していた配信が全部入っているか</b>を、公開前に確認しましょう（「肝は自分、雑務はAI」のレッスンも参照）。
+  </div>
+
+  <!-- ===== よくある失敗 ===== -->
+  <h2>よくある失敗と対策</h2>
+  <table>
+    <tr><th>毎回、同じところでミスをする</th><td>スキルに注意点を書き足す。ひな形（うまくいった前回分）を渡す</td></tr>
+    <tr><th>前に言ったことを覚えていない</th><td>チャットは閉じると忘れる。常に守ってほしいことはCLAUDE.md、作業の手順はスキルへ</td></tr>
+    <tr><th>話が混ざって、精度が落ちた</th><td>用途ごとに部屋を分ける。長くなったら整理して新しい部屋で再開する</td></tr>
+    <tr><th>すぐ使えなくなる</th><td>まとめて指示を出す。上位モデルは仕組み作りだけに使う</td></tr>
+    <tr><th>大事な情報を読まれないか不安</th><td>シークレットフォルダに分け、設定ファイルで禁止にする。テストして確認する</td></tr>
+    <tr><th>SNSの自動投稿でトラブル</th><td>下書き保存までをAIに任せ、投稿は自分で押す</td></tr>
+  </table>
+
+  <div class="work">
+    <b>✏ ワーク　あなたのClaude Codeを育てる</b>
+    <ol class="plain">
+      <li>最近、Claude Codeが繰り返したミスを2つ書き出す</li>
+      <li>そのミスが起きた作業を1つ選び、「これをスキルにして」と頼む（ミスの内容も伝える）</li>
+      <li>新しいチャットで、そのスキルを使って同じ作業をさせてみる</li>
+      <li>「私のスキルを一覧で出して」と頼み、名前と説明を確認する</li>
+      <li>「課金はしない」「パスワードは覚えない」「このフォルダは読まない」の3つのルールを、最初のチャットで伝える</li>
+    </ol>
+  </div>
+
+  <div class="summary"><b>まとめ</b>
+    覚えてほしいことはスキルにして、「スキルを一覧で出して」で確認する。チャットは用途ごとに分け、うまくいった前回分をひな形として渡す。使用制限は「まとめて指示→休む」で付き合い、課金・パスワード・お金に関わるサービスには触らせないルールを最初に決めておきましょう。大事なファイルは設定で読めないようにして、実際にテストすると安心です。</div>
+
+</div>
+</body>
+</html>

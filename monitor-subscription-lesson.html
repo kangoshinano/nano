@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>価格・モニター募集・サブスク設計</title>
+<style>
+  body { margin: 0; background: #f6f4ef; }
+  .lesson { --ink:#2b2a28; --muted:#6b675f; --line:#e2ddd2; --card:#fff; --accent:#1f6f6b; --accent-soft:#e3f1ef; --ng:#b54a3a; --ng-soft:#f9e8e4; --ok:#2f7a4a; --ok-soft:#e6f3ea; --warn-soft:#fff4d6; --warn:#8a6414;
+    max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--ink); font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif; line-height: 1.85; font-size: 16px; }
+  .lesson * { box-sizing: border-box; }
+  .lesson h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 8px; }
+  .lesson h2 { font-size: 1.3rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); }
+  .lesson h3 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--accent); }
+  .lesson p { margin: 0 0 12px; }
+  .lesson ul { margin: 0 0 12px; padding-left: 1.3em; }
+  .lesson li { margin-bottom: 6px; }
+  .lesson .lead { color: var(--muted); }
+  .lesson .tag { display: inline-block; font-size: .8rem; background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-weight: 700; margin-bottom: 10px; }
+  .lesson .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 14px 0; }
+  .lesson .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .lesson .col { border-radius: 12px; padding: 14px 16px; }
+  .lesson .col.ng { background: var(--ng-soft); border: 1px solid #e8c3bb; }
+  .lesson .col.ok { background: var(--ok-soft); border: 1px solid #bfdcc9; }
+  .lesson .col .ttl { font-weight: 700; margin-bottom: 8px; }
+  .lesson .col.ng .ttl { color: var(--ng); }
+  .lesson .col.ok .ttl { color: var(--ok); }
+  .lesson .flow { list-style: none; padding: 0; margin: 0; }
+  .lesson .flow li { background: rgba(255,255,255,.75); border-radius: 8px; padding: 8px 12px; margin: 0 0 18px; font-size: .95rem; position: relative; }
+  .lesson .flow li:last-child { margin-bottom: 0; }
+  .lesson .flow li:not(:last-child)::after { content: "▼"; position: absolute; left: 50%; bottom: -17px; transform: translateX(-50%); font-size: .7rem; color: var(--muted); }
+  .lesson .steps { list-style: none; padding: 0; counter-reset: s; }
+  .lesson .steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 12px 56px; position: relative; margin-bottom: 10px; }
+  .lesson .steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; text-align: center; line-height: 28px; font-weight: 700; }
+  .lesson .steps b { display: block; }
+  .lesson table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 12px 0 16px; font-size: .95rem; }
+  .lesson th, .lesson td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .lesson th { background: var(--accent-soft); width: 32%; }
+  .lesson tr:last-child th, .lesson tr:last-child td { border-bottom: 0; }
+  .lesson .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .95rem; }
+  .lesson .note b { color: var(--warn); }
+  .lesson .summary { background: var(--accent); color: #fff; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .summary b { display: block; margin-bottom: 4px; }
+  .lesson .work { background: var(--card); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+  .lesson .src { font-size: .8rem; color: var(--muted); }
+  .lesson .src a { color: var(--muted); }
+  @media (max-width: 600px) {
+    .lesson .compare { grid-template-columns: 1fr; }
+    .lesson th { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<div class="lesson">
+
+  <span class="tag">質問会でよく出る質問から生まれた講義</span>
+  <h1>価格・モニター募集・サブスク設計</h1>
+  <p class="lead">「最初は自信がなくて安くしてしまった」「モニター募集で広告を出していいの？」「プランを分けすぎてしまった」。商品を世に出す直前に、毎回のように出る相談をまとめました。</p>
+
+  <!-- ===== Part 1 ===== -->
+  <h2>Part 1　価格とモニター募集</h2>
+
+  <h3>1. 安売りしない</h3>
+  <ul>
+    <li>弱気になって価格を大きく下げると、実施してから「割に合わない」と気づくことが多いです。<b>準備・当日・フォローまで含めた時間</b>で考えます。</li>
+    <li>あなたにしかない技術や経験があるなら、同業の<b>相場の上の方</b>を基準にしてかまいません。</li>
+    <li>相場は業界で大きく違います。自分の業界の「しっかり学べるもの」の相場を調べて基準にします。</li>
+  </ul>
+
+  <h3>2. リアルとオンラインの価格差</h3>
+  <table>
+    <tr><th>内容</th><td>リアルとオンラインで同じでかまいません。</td></tr>
+    <tr><th>価格</th><td>直接見られる・質問できる・場の熱量があるリアルを高くします。オンラインを少し安くすると、リアルの価値が上がります。</td></tr>
+    <tr><th>オンラインの下限</th><td>極端に下げず、リアルの6〜7割程度を目安にします。</td></tr>
+  </table>
+
+  <h3>3. 高額コースを見せる効果</h3>
+  <p>すぐに売る予定がなくても、上位に高額コースが並んでいるだけで他のコースが手頃に見えます。「この人はここまで教えられる人なんだ」という信頼にもつながります。</p>
+
+  <h3>4. モニター募集の正しい使い方</h3>
+  <div class="compare">
+    <div class="col ng">
+      <div class="ttl">✕ よくある失敗</div>
+      <ul class="flow">
+        <li>「モニター募集」を看板に広告を出す</li>
+        <li>安さ目当ての人が集まる</li>
+        <li>人数を取りすぎて時給が下がり、正式価格に戻せない</li>
+      </ul>
+    </div>
+    <div class="col ok">
+      <div class="ttl">◯ おすすめ</div>
+      <ul class="flow">
+        <li>通常の講座として広告を出す</li>
+        <li>クロージングで「今ならモニター価格」と案内</li>
+        <li>1〜2名に絞って実施し、工数を測る</li>
+        <li>それを正式価格の根拠にする</li>
+      </ul>
+    </div>
+  </div>
+  <ul>
+    <li>モニターを取りすぎると時給単価が下がり、本来の価格に戻せなくなります。まずは<b>1〜2名程度</b>で、かかる時間と工数を測ります。</li>
+    <li>声をかけるなら、なってくれそうな人への<b>個別連絡</b>が早く確実です。数値で目標を置きます（例：「〇日までに10人に連絡して、10月中に2件」）。</li>
+    <li>条件として、感想・ビフォーアフター・事例掲載の許可をもらっておくと、その後の販売に使えます。</li>
+  </ul>
+
+  <div class="note">
+    <b>⚠ 感想・体験談を載せるときの注意（ステマ規制）</b><br>
+    2023年10月から、広告であることを隠す表示は景品表示法違反（ステルスマーケティング）になります。規制を受けるのは広告主（講座を売る側）です。2025年3月には、無償提供したモニターに投稿を依頼し、その投稿を自社サイトで紹介した事例が、依頼であることを明示していないとして措置命令を受けています。<br>
+    ➡ 「モニター参加者の感想です」など、依頼関係が分かる表示をし、内容を指示して書かせないようにします。運用の詳細は消費者庁の公式ページで確認してください。
+  </div>
+
+  <h3>5. 価格を伝えるときの一言</h3>
+  <ul>
+    <li>年間プランと月払いがあるなら、「半分くらいの方は年間を選ばれています」のように実際の選ばれ方をさらっと伝えると、迷いが減ります。</li>
+    <li>サブスクの売上の一部（例：月数千円）だけを広告費に回すと、無理なく集客を続けられます。</li>
+  </ul>
+
+  <div class="summary"><b>Part 1 のまとめ</b>
+    価格は「かかる時間」と「業界の相場の上の方」で決める。リアルとオンラインは内容同じ・価格はリアルを高く。モニターは広告の看板にせず、クロージングで提示する。人数を絞って工数を測り、正式価格の根拠にする。</div>
+
+  <!-- ===== Part 2 ===== -->
+  <h2>Part 2　サブスク設計は「決める順番」が大事</h2>
+  <p>「せっかく入ってくれた人に損をさせたくない」と考えるほど条件が細かくなり、お客様から見て分かりにくくなります。決める順番を整理しましょう。</p>
+
+  <ol class="steps">
+    <li><b>位置づけ</b>誰のための、何のためのプランか</li>
+    <li><b>価格</b>位置づけから自然に決まる</li>
+    <li><b>プランの差</b>分けるなら差は大きく、似たプランはまとめる</li>
+    <li><b>無料期間</b>課金前提で〇日無料。初期メンバーは価格据え置き</li>
+    <li><b>続ける理由</b>横のつながり、実践の場に安く参加</li>
+  </ol>
+
+  <h3>1. 価格ではなく「位置づけ」から決める</h3>
+  <div class="card">
+    <b>例）個別コンサル（高単価）の下に置く月額プラン</b>
+    <ul>
+      <li>名前を「トライアルプラン」にして、「個別コンサルを迷っている人が、まず雰囲気を知るためのプラン」と位置づける。</li>
+      <li>一度でも個別コンサルを受けた人は、理解が早く、一緒に過ごした時間も長いので、割引価格で残れるようにする。</li>
+      <li>高いお金を払ってくれた人を優遇する意図がはっきりしているので、価格差に納得感が出る。</li>
+    </ul>
+  </div>
+  <p>「どういう思いで、何の目的で、この差をつけるのか」を<b>一文で言えないプランは、分けない</b>方がいいです。</p>
+
+  <h3>2. プランの分け方</h3>
+  <table>
+    <tr><th>分けるなら差を大きく</th><td>「月何回参加できるか」「どの教材が見られるか」など、提供内容で明確な差をつけます。小さな差で4〜5つ作ると、選ぶ側が疲れます。</td></tr>
+    <tr><th>似た期間はまとめる</th><td>6ヶ月と1年は、同じ条件・同じ金額でもかまいません。</td></tr>
+    <tr><th>長くいるほど得をする</th><td>会員サイトの「登録から〇日後に公開」設定で、在籍期間に応じて教材を少しずつ開放できます。</td></tr>
+    <tr><th>高額プランを見せる</th><td>上位プランが並ぶだけで、他のプランが相対的に手頃に見えます。</td></tr>
+  </table>
+
+  <h3>3. 無料期間・お試しの作り方</h3>
+  <ul>
+    <li>完全無料にすると「タダのもの」になり価値が下がります。<b>お金はいただく前提</b>で無料期間を設けます。</li>
+    <li>決済サービスによっては、申込時に決済情報を登録してもらい、〇日後に初回課金が発生する設定ができます（例：10日間無料→11日目から月額）。</li>
+    <li>無料期間中にやめれば費用はかからず、続けたい人だけが残ります。その期間に「残る理由」をどれだけ提供できるかが勝負です。</li>
+    <li>オープン初期のメンバーは、正式価格に上がっても<b>価格据え置き</b>が一般的で、トラブルも起きにくい方法です。</li>
+    <li>お試しで使い倒してすぐやめる人もいます。割り切って、本気で学びたい人を相手にします。</li>
+  </ul>
+  <div class="note">
+    <b>⚠ 自動課金の表示</b><br>
+    無料期間後に自動で有料へ移行する契約は、消費生活センターでもトラブル事例として注意喚起されています。<b>課金開始日と金額を、申込時にはっきり明記</b>しましょう。
+  </div>
+
+  <h3>4. 継続してもらう理由は「コンテンツ」だけではない</h3>
+  <p>ノウハウだけのサブスクは、知りたいことを知ったら解約されます。続けてもらう理由は次の3つです。</p>
+  <ul>
+    <li><b>横のつながり</b>：同じ立場の仲間と情報交換できる（個人で活動している人ほど求めています）。</li>
+    <li><b>実践の場に安く参加</b>：例）通常5万円の実技講習に、メンバーは1万円で参加できる。</li>
+    <li><b>オフ会・食事会</b>：お子さん連れOKにすると参加のハードルが下がります。</li>
+  </ul>
+
+  <h3>5. 継続率を上げる運用のポイント</h3>
+  <ul>
+    <li><b>離脱は「初回〜2回目」に集中しやすい</b>（価値を実感しきる前に辞める）。無料期間と最初の1〜2ヶ月に、仲間との交流や最初の成果体験を集中させましょう。</li>
+    <li><b>決済失敗による自然解約</b>（カード期限切れ・限度額超過など）も相当数あるとされます。決済エラー時の通知と、再決済の案内の流れを用意しておきます。</li>
+  </ul>
+
+  <h3>6. 細部は「人が入ってから」決める</h3>
+  <ul>
+    <li>メンバーがいない段階で考え込むと、机上の空論になりがちです。入った人から想定と違う要望が出ることはよくあります。</li>
+    <li>最低限決めるのは<b>「価格」と「位置づけ（目的）」</b>だけ。価値の提供方法は、生の声を聞いて改善します。</li>
+    <li>個別チャットまで開くと負担が大きいので、質問はグループ内のみにするなど、運営負担も最初に考えます。</li>
+  </ul>
+  <div class="note">
+    <b>録画をアーカイブに残すとき</b><br>
+    質問会やグループコンサルの録画をコミュニティ内で共有する場合は、申込時の規約や契約書に「内部でコンテンツとして公開することへの同意」の項目を入れておくと安心です。
+  </div>
+
+  <div class="summary"><b>Part 2 のまとめ</b>
+    サブスクは「価格」ではなく「何のためのプランか」から決める。分けるなら差を大きく、似たプランはまとめる。無料期間はお金をいただく前提で、初期メンバーは価格据え置き。続けてもらう理由は、横のつながりと実践の場。細部は人が入ってから、生の声で育てる。</div>
+
+  <!-- ===== Work ===== -->
+  <div class="work">
+    <b>✏ ワーク</b>
+    <p>あなたのサブスク（またはこれから作るプラン）について、次の一文を書いてみましょう。</p>
+    <p>「このプランは、<u>　誰　</u>が、<u>　何のため　</u>に入るためのプランで、<u>　〇〇　</u>だからこの価格です。」</p>
+    <p>一文で書けない場合は、プランを分けすぎているサインです。</p>
+  </div>
+
+  <p class="src">参考：
+    <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/" target="_blank" rel="noopener">消費者庁 ステルスマーケティング</a> /
+    <a href="https://www.advertimes.com/20250327/article493369/" target="_blank" rel="noopener">ロート製薬のステマ認定 モニター施策の落とし穴</a> /
+    <a href="https://aurant-technologies.com/blog/subscription-design-guide/" target="_blank" rel="noopener">2026年版 サブスク設計ガイド</a> /
+    <a href="https://www.pref.yamagata.jp/documents/27440/news20220826.pdf" target="_blank" rel="noopener">山形県 無料トライアルの注意喚起</a>
+  </p>
+
+</div>
+</body>
+</html>
